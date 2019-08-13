@@ -481,6 +481,10 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
             }
         } else if (dateLibrary.equals("legacy")) {
             additionalProperties.put("legacyDates", "true");
+        } else if ("calendar".equals(dateLibrary)) {
+            typeMapping.put("date", "Calendar");
+            typeMapping.put("DateTime", "Calendar");
+            importMapping.put("Calendar", "java.util.Calendar");
         }
     }
 

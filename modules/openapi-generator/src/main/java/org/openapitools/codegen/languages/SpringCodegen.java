@@ -185,15 +185,15 @@ public class SpringCodegen extends AbstractJavaCodegen
         additionalProperties.put("configOptions", configOptions);
 
         // Process java8 option before common java ones to change the default dateLibrary to java8.
-        LOGGER.info("----------------------------------");
-        if (additionalProperties.containsKey(JAVA_8)) {
-            LOGGER.info("has JAVA8");
-            this.setJava8(Boolean.valueOf(additionalProperties.get(JAVA_8).toString()));
-            additionalProperties.put(JAVA_8, java8);
-        }
-        if (this.java8 && !additionalProperties.containsKey(DATE_LIBRARY)) {
-            setDateLibrary("java8");
-        }
+//        LOGGER.info("----------------------------------");
+//        if (additionalProperties.containsKey(JAVA_8)) {
+//            LOGGER.info("has JAVA8");
+//            this.setJava8(Boolean.valueOf(additionalProperties.get(JAVA_8).toString()));
+//            additionalProperties.put(JAVA_8, java8);
+//        }
+//        if (this.java8 && !additionalProperties.containsKey(DATE_LIBRARY)) {
+//            setDateLibrary("java8");
+//        }
 
         if (!additionalProperties.containsKey(BASE_PACKAGE) && additionalProperties.containsKey(CodegenConstants.INVOKER_PACKAGE)) {
             // set invokerPackage as basePackage:
