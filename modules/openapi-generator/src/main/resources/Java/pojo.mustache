@@ -1,3 +1,6 @@
+import com.google.gson.Gson;
+import co.poynt.model.Utils;
+
 /**
  * {{#description}}{{.}}{{/description}}{{^description}}{{classname}}{{/description}}
  */{{#description}}
@@ -59,7 +62,7 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#parcela
   public static final String SERIALIZED_NAME_{{nameInSnakeCase}} = "{{baseName}}";
   @SerializedName(SERIALIZED_NAME_{{nameInSnakeCase}})
   {{/gson}}
-  private {{{datatypeWithEnum}}} {{name}}{{#defaultValue}} = {{{.}}}{{/defaultValue}};
+  protected {{{datatypeWithEnum}}} {{name}}{{#defaultValue}} = {{{.}}}{{/defaultValue}};
 
   {{/vars}}
   {{#parcelableModel}}
@@ -235,62 +238,52 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#parcela
   }
 
 {{#parcelableModel}}
-
-  public void writeToParcel(Parcel out, int flags) {
-{{#model}}
-{{#isArrayModel}}
-    out.writeList(this);
-{{/isArrayModel}}
-{{^isArrayModel}}
-{{#parent}}
-    super.writeToParcel(out, flags);
-{{/parent}}
-{{#vars}}
-    out.writeValue({{name}});
-{{/vars}}
-{{/isArrayModel}}
-{{/model}}
-  }
-
-  {{classname}}(Parcel in) {
-{{#isArrayModel}}
-    in.readTypedList(this, {{arrayModelType}}.CREATOR);
-{{/isArrayModel}}
-{{^isArrayModel}}
-{{#parent}}
-    super(in);
-{{/parent}}
-{{#vars}}
-{{#isPrimitiveType}}
-    {{name}} = ({{{datatypeWithEnum}}})in.readValue(null);
-{{/isPrimitiveType}}
-{{^isPrimitiveType}}
-    {{name}} = ({{{datatypeWithEnum}}})in.readValue({{complexType}}.class.getClassLoader());
-{{/isPrimitiveType}}
-{{/vars}}
-{{/isArrayModel}}
-  }
-
   public int describeContents() {
-    return 0;
+      return 0;
+  }
+
+  public void writeToParcel(Parcel parcel, int flags) {
+      long startTime = System.currentTimeMillis();
+      try {
+          Gson gson = Utils.getGsonObject();
+          String jsonString = gson.toJson(this);
+          byte[] compressedBytes = Utils.compress(jsonString);
+          parcel.writeInt(compressedBytes.length);
+          parcel.writeByteArray(compressedBytes);
+          long stopTime = System.currentTimeMillis();
+          long elapsedTime = stopTime - startTime;
+          Log.d(TAG, " MEASURE_TIME Total write time "+elapsedTime + " size:"+jsonString.length() + " compressedSize:"+compressedBytes.length);
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
   }
 
   public static final Parcelable.Creator<{{classname}}> CREATOR = new Parcelable.Creator<{{classname}}>() {
-    public {{classname}} createFromParcel(Parcel in) {
-{{#model}}
-{{#isArrayModel}}
-      {{classname}} result = new {{classname}}();
-      result.addAll(in.readArrayList({{arrayModelType}}.class.getClassLoader()));
-      return result;
-{{/isArrayModel}}
-{{^isArrayModel}}
-      return new {{classname}}(in);
-{{/isArrayModel}}
-{{/model}}
-    }
-    public {{classname}}[] newArray(int size) {
-      return new {{classname}}[size];
-    }
+
+      public {{classname}}[] newArray(int size) {
+          return new {{classname}}[size];
+      }
+
+      public {{classname}} createFromParcel(Parcel source) {
+        long startTime = System.currentTimeMillis();
+        int length = source.readInt();
+        byte[] bytes = new byte[length];
+        source.readByteArray(bytes);
+        try {
+            String jString = Utils.decompress(bytes);
+            Log.d(TAG, " MEASURE_TIME Received bytes "+bytes.length+ " json size:"+jString.length() );
+            Gson gson = Utils.getGsonObject();
+            {{classname}} object = gson.fromJson(jString, {{classname}}.class);
+            Log.d(TAG, " Gson Json string size:" + jString.length());
+            long stopTime = System.currentTimeMillis();
+            long elapsedTime = stopTime - startTime;
+            Log.d(TAG, " MEASURE_TIME Total read time " + elapsedTime);
+            return object;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+      }
   };
 {{/parcelableModel}}
 }
