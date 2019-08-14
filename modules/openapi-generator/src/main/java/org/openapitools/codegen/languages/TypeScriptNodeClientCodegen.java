@@ -117,7 +117,7 @@ public class TypeScriptNodeClientCodegen extends AbstractTypeScriptClientCodegen
             return importMapping.get(name);
         }
 
-        return DEFAULT_IMPORT_PREFIX + camelize(toModelName(name), true);
+        return DEFAULT_IMPORT_PREFIX + camelize(toModelName(name), false);
     }
 
     @Override
