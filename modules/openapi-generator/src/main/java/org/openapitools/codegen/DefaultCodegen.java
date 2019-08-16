@@ -1923,6 +1923,7 @@ public class DefaultCodegen implements CodegenConfig {
 
         // post process model properties
         if (m.vars != null) {
+            m.vars.sort(null);
             for (CodegenProperty prop : m.vars) {
                 postProcessModelProperty(m, prop);
             }

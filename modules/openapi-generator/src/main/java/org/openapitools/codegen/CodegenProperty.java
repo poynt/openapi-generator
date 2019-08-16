@@ -19,7 +19,7 @@ package org.openapitools.codegen;
 
 import java.util.*;
 
-public class CodegenProperty implements Cloneable {
+public class CodegenProperty implements Cloneable, Comparable<CodegenProperty> {
     public String openApiType, baseName, complexType, getter, setter, description, dataType,
             datatypeWithEnum, dataFormat, name, min, max, defaultValue, defaultValueWithParam,
             baseType, containerType, title;
@@ -680,6 +680,18 @@ public class CodegenProperty implements Cloneable {
                 ", isXmlWrapped=" + isXmlWrapped +
                 '}';
     }
-
+    /**
+     *   Allow sorting vars based on data-type
+     */
+    @Override
+    public int compareTo(CodegenProperty that) {
+        if (getDatatypeWithEnum() == null || that.getDatatypeWithEnum() == null) {
+            return 0;
+        }
+        else if (getDatatypeWithEnum().compareTo(that.getDatatypeWithEnum()) == 0){
+            return getNameInCamelCase().compareTo(that.getNameInCamelCase());
+        }
+        return getDatatypeWithEnum().compareTo(that.getDatatypeWithEnum());
+    }
 
 }
