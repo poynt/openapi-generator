@@ -97,18 +97,18 @@ public class StringUtils {
         }
 
         // Remove all underscores (underscore_case to camelCase)
-        p = Pattern.compile("(_)(.)");
-        m = p.matcher(word);
-        while (m.find()) {
-            String original = m.group(2);
-            String upperCase = original.toUpperCase(Locale.ROOT);
-            if (original.equals(upperCase)) {
-                word = word.replaceFirst("_", "");
-            } else {
-                word = m.replaceFirst(upperCase);
-            }
-            m = p.matcher(word);
-        }
+//        p = Pattern.compile("(_)(.)");
+//        m = p.matcher(word);
+//        while (m.find()) {
+//            String original = m.group(2);
+//            String upperCase = original.toUpperCase(Locale.ROOT);
+//            if (original.equals(upperCase)) {
+//                word = word.replaceFirst("_", "");
+//            } else {
+//                word = m.replaceFirst(upperCase);
+//            }
+//            m = p.matcher(word);
+//        }
 
         // Remove all hyphens (hyphen-case to camelCase)
         p = Pattern.compile("(-)(.)");
@@ -130,7 +130,7 @@ public class StringUtils {
         }
 
         // remove all underscore
-        word = word.replaceAll("_", "");
+//        word = word.replaceAll("_", "");
 
         return word;
     }

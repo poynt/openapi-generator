@@ -1318,7 +1318,7 @@
         <module>modules/openapi-generator-cli</module>
         <module>modules/openapi-generator-maven-plugin</module>
         <module>modules/openapi-generator-gradle-plugin</module>
-        <module>modules/openapi-generator-online</module>
+<!--        <module>modules/openapi-generator-online</module>-->
     </modules>
     <reporting>
         <outputDirectory>target/site</outputDirectory>
@@ -1382,6 +1382,7 @@
         </repository>
     </repositories>
     <properties>
+        <maven.test.skip>true</maven.test.skip>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <swagger-parser-groupid>org.openapitools.swagger.parser</swagger-parser-groupid>

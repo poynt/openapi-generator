@@ -122,7 +122,7 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
         typeMapping.put("Map", "any");
         typeMapping.put("map", "any");
         typeMapping.put("date", "string");
-        typeMapping.put("DateTime", "Date");
+        typeMapping.put("DateTime", "string");
         typeMapping.put("binary", "any");
         typeMapping.put("File", "any");
         typeMapping.put("ByteArray", "string");
@@ -315,10 +315,12 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
         if (ModelUtils.isArraySchema(p)) {
             ArraySchema ap = (ArraySchema) p;
             Schema inner = ap.getItems();
-            return getSchemaType(p) + "<" + getTypeDeclaration(inner) + ">";
+            return getTypeDeclaration(inner) + "[]";
+//            return getSchemaType(p) + "<" + getTypeDeclaration(inner) + ">";
         } else if (ModelUtils.isMapSchema(p)) {
             Schema inner = ModelUtils.getAdditionalProperties(p);
-            return "{ [key: string]: " + getTypeDeclaration(inner) + "; }";
+            return "Map<string, " + getTypeDeclaration(inner) + ">";
+//            return "{ [key: string]: " + getTypeDeclaration(inner) + "; }";
         } else if (ModelUtils.isFileSchema(p)) {
             return "any";
         } else if (ModelUtils.isBinarySchema(p)) {
@@ -334,10 +336,12 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
         if (ModelUtils.isArraySchema(p)) {
             ArraySchema mp1 = (ArraySchema) p;
             inner = mp1.getItems();
-            return this.getSchemaType(p) + "<" + this.getParameterDataType(parameter, inner) + ">";
+            return this.getParameterDataType(parameter, inner) + "[]";
+//            return this.getSchemaType(p) + "<" + this.getParameterDataType(parameter, inner) + ">";
         } else if (ModelUtils.isMapSchema(p)) {
             inner = ModelUtils.getAdditionalProperties(p);
-            return "{ [key: string]: " + this.getParameterDataType(parameter, inner) + "; }";
+            return "Map<string, " + this.getParameterDataType(parameter, inner) + ">";
+//            return "{ [key: string]: " + this.getParameterDataType(parameter, inner) + "; }";
         } else if (ModelUtils.isStringSchema(p)) {
             // Handle string enums
             if (p.getEnum() != null) {
