@@ -391,6 +391,10 @@ public class JavaClientCodegen extends AbstractJavaCodegen
         }
         // put the boolean value back to PARCELABLE_MODEL in additionalProperties
         additionalProperties.put(PARCELABLE_MODEL, parcelableModel);
+        if(parcelableModel){
+            // add aidl file to the model template files
+            modelTemplateFiles.put("parcel.mustache", ".aidl");
+        }
 
         if (additionalProperties.containsKey(USE_BEANVALIDATION)) {
             this.setUseBeanValidation(convertPropertyToBooleanAndWriteBack(USE_BEANVALIDATION));
