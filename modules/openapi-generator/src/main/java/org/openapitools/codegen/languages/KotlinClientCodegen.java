@@ -79,6 +79,9 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
     public static final String USE_SPRING_BOOT3 = "useSpringBoot3";
 
     public static final String DATE_LIBRARY = "dateLibrary";
+
+    public static final String USE_PARCELIZE = "parcelizeModels";
+
     public static final String REQUEST_DATE_CONVERTER = "requestDateConverter";
     public static final String COLLECTION_TYPE = "collectionType";
 
@@ -408,6 +411,11 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
         if (!hasRx3 && !hasCoroutines) {
             setDoNotUseRxAndCoroutines(true);
             additionalProperties.put(DO_NOT_USE_RX_AND_COROUTINES, true);
+        }
+
+        boolean hasParcelize = additionalProperties.containsKey(USE_PARCELIZE);
+        if(hasParcelize) {
+            modelTemplateFiles.put("parcel.mustache", ".aidl");
         }
 
         // infrastructure destination folder
