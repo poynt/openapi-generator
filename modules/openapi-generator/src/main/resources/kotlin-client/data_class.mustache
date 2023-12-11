@@ -70,23 +70,17 @@
 
 {{/allVars}}
 ){{/discriminator}}{{#parent}}{{^serializableModel}}{{^parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#parent}}{{#serializableModel}}{{^parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}, Serializable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#parent}}{{^serializableModel}}{{#parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}, Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#parent}}{{#serializableModel}}{{#parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}, Serializable, Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{^parent}}{{#serializableModel}}{{^parcelizeModels}} : Serializable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{^parent}}{{^serializableModel}}{{#parcelizeModels}} : Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{^parent}}{{#serializableModel}}{{#parcelizeModels}} : Serializable, Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#generateRoomModels}}{{#parent}}, {{/parent}}{{^discriminator}}{{^parent}}:{{/parent}} ITransformForStorage
-<{{classname}}RoomModel>{{/discriminator}}{{/generateRoomModels}}{{^parent}} : GsonParcelable {
+<{{classname}}RoomModel>{{/discriminator}}{{/generateRoomModels}}{{^parent}} : GsonParcelable  {
     public companion object {
     @JvmField
     public val CREATOR: Parcelable.Creator<{{classname}}> = gsonParcelableCreator<{{classname}}>()
     }
-{{^hasEnums}}
-        }
-{{/hasEnums}}
 {{/parent}}
 {{#parent}}, GsonParcelable {
     public companion object {
     @JvmField
     public val CREATOR: Parcelable.Creator<{{classname}}> = gsonParcelableCreator<{{classname}}>()
     }
-{{^hasEnums}}
-        }
-{{/hasEnums}}
 {{/parent}}
 {{#generateRoomModels}}
         companion object { }
@@ -177,6 +171,4 @@
         {{/isEnum}}
     {{/vars}}
 {{/hasEnums}}
-{{#vendorExtensions.x-has-data-class-body}}
-        }
-{{/vendorExtensions.x-has-data-class-body}}
+    }
