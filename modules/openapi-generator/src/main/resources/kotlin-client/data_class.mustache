@@ -21,11 +21,11 @@
         import kotlinx.serialization.SerialName
         import kotlinx.serialization.Contextual
         {{#enumUnknownDefaultCase}}
-            import kotlinx.serialization.KSerializer
-            import kotlinx.serialization.Serializer
-            import kotlinx.serialization.builtins.serializer
-            import kotlinx.serialization.encoding.Decoder
-            import kotlinx.serialization.encoding.Encoder
+         import kotlinx.serialization.KSerializer
+         import kotlinx.serialization.Serializer
+         import kotlinx.serialization.builtins.serializer
+         import kotlinx.serialization.encoding.Decoder
+         import kotlinx.serialization.encoding.Encoder
         {{/enumUnknownDefaultCase}}
         {{#hasEnums}}
         {{/hasEnums}}
@@ -63,14 +63,21 @@
     @Deprecated(message = "This schema is deprecated.")
 {{/isDeprecated}}
 {{>additionalModelTypeAnnotations}}
-{{#nonPublicApi}}internal {{/nonPublicApi}}{{#discriminator}}interface{{/discriminator}}{{^discriminator}}{{#hasVars}}data class {{/hasVars}}{{^hasVars}}class {{/hasVars}}{{/discriminator}}{{classname}}{{^discriminator}} (
+{{#nonPublicApi}}internal {{/nonPublicApi}}{{#discriminator}}interface {{/discriminator}}{{^discriminator}}{{#hasVars}}data class {{/hasVars}}{{^hasVars}}class {{/hasVars}}{{/discriminator}}{{classname}}{{^discriminator}} (
 
 {{#allVars}}
     {{#required}}{{>data_class_req_var}}{{/required}}{{^required}}{{>data_class_opt_var}}{{/required}}{{^-last}},{{/-last}}
 
 {{/allVars}}
 ){{/discriminator}}{{#parent}}{{^serializableModel}}{{^parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#parent}}{{#serializableModel}}{{^parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}, Serializable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#parent}}{{^serializableModel}}{{#parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}, Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#parent}}{{#serializableModel}}{{#parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}, Serializable, Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{^parent}}{{#serializableModel}}{{^parcelizeModels}} : Serializable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{^parent}}{{^serializableModel}}{{#parcelizeModels}} : Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{^parent}}{{#serializableModel}}{{#parcelizeModels}} : Serializable, Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#generateRoomModels}}{{#parent}}, {{/parent}}{{^discriminator}}{{^parent}}:{{/parent}} ITransformForStorage
-<{{classname}}RoomModel>{{/discriminator}}{{/generateRoomModels}}{{^parent}} : GsonParcelable  {
+<{{classname}}RoomModel>{{/discriminator}}{{/generateRoomModels}}
+
+{{#discriminator}}
+    {
+{{/discriminator}}
+
+{{^discriminator}}
+{{^parent}} : GsonParcelable  {
     public companion object {
     @JvmField
     public val CREATOR: Parcelable.Creator<{{classname}}> = gsonParcelableCreator<{{classname}}>()
@@ -82,6 +89,7 @@
     public val CREATOR: Parcelable.Creator<{{classname}}> = gsonParcelableCreator<{{classname}}>()
     }
 {{/parent}}
+{{/discriminator}}
 {{#generateRoomModels}}
         companion object { }
     {{^discriminator}}override fun toRoomModel(): {{classname}}RoomModel =
