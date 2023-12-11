@@ -31,7 +31,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
 
-import {{invokerPackage}}.JSON;
+/**
+* import {{invokerPackage}}.JSON;
+*/
+import com.godaddy.commerce.utils.JSON;
+import com.godaddy.commerce.utils.AbstractOpenApiSchema;
 
 {{>additionalModelTypeAnnotations}}{{>generatedAnnotation}}{{>xmlAnnotation}}
 public class {{classname}} extends AbstractOpenApiSchema{{#vendorExtensions.x-implements}} implements {{{.}}}{{^-last}}, {{/-last}}{{/vendorExtensions.x-implements}} {
