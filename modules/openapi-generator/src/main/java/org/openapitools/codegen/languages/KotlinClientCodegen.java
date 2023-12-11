@@ -417,7 +417,6 @@ public class KotlinClientCodegen extends AbstractKotlinCodegen {
         if(hasParcelize) {
             modelTemplateFiles.put("parcel.mustache", ".aidl");
         }
-
         // infrastructure destination folder
         final String infrastructureFolder = (sourceFolder + File.separator + packageName + File.separator + "infrastructure").replace(".", "/");
         authFolder = (sourceFolder + File.separator + packageName + File.separator + "auth").replace(".", "/");
