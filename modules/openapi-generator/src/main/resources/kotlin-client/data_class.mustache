@@ -63,7 +63,7 @@
     @Deprecated(message = "This schema is deprecated.")
 {{/isDeprecated}}
 {{>additionalModelTypeAnnotations}}
-{{#nonPublicApi}}internal {{/nonPublicApi}}{{#discriminator}}interface {{/discriminator}}{{^discriminator}}{{#hasVars}}data class @JvmOverloads constructor {{/hasVars}}{{^hasVars}}class {{/hasVars}}{{/discriminator}}{{classname}}{{^discriminator}} (
+{{#nonPublicApi}}internal {{/nonPublicApi}}{{#discriminator}}interface {{/discriminator}}{{^discriminator}}{{#hasVars}}data class {{/hasVars}}{{^hasVars}}{{/hasVars}}{{/discriminator}}{{classname}}{{^discriminator}} @JvmOverloads constructor(
 
 {{#allVars}}
     {{#required}}{{>data_class_opt_var}}{{/required}}{{^required}}{{>data_class_opt_var}}{{/required}}{{^-last}},{{/-last}}
