@@ -2895,9 +2895,7 @@ public class DefaultCodegen implements CodegenConfig {
             addAdditionPropertiesToCodeGenModel(m, schema);
         }
 
-        if (Boolean.TRUE.equals(schema.getNullable())) {
-            m.isNullable = Boolean.TRUE;
-        }
+        m.isNullable = Boolean.TRUE;
 
         // end of code block for composed schema
     }
@@ -3132,9 +3130,7 @@ public class DefaultCodegen implements CodegenConfig {
         if (!ModelUtils.isArraySchema(schema)) {
             m.dataType = getSchemaType(schema);
         }
-        if (!ModelUtils.isAnyType(schema) && Boolean.TRUE.equals(schema.getNullable())) {
-            m.isNullable = Boolean.TRUE;
-        }
+        m.isNullable = Boolean.TRUE;
 
         m.setTypeProperties(schema);
         m.setFormat(schema.getFormat());
