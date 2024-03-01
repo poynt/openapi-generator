@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.common.collect.ImmutableMap;
 import com.samskivert.mustache.Mustache;
 import io.swagger.v3.oas.models.media.ArraySchema;
-import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.apache.commons.io.FilenameUtils;
@@ -30,7 +29,6 @@ import org.openapitools.codegen.*;
 import org.openapitools.codegen.model.ModelMap;
 import org.openapitools.codegen.model.ModelsMap;
 import org.openapitools.codegen.templating.mustache.EscapeChar;
-import org.openapitools.codegen.templating.mustache.JoinWithCommaLambda;
 import org.openapitools.codegen.utils.ModelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -588,6 +586,26 @@ public abstract class AbstractKotlinCodegen extends DefaultCodegen implements Co
 
     public void setNonPublicApi(boolean nonPublicApi) {
         this.nonPublicApi = nonPublicApi;
+    }
+
+    @Override
+    public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
+        super.postProcessModelProperty(model, property);
+        // convert enum property to string.
+        if (Boolean.TRUE.equals(property.isEnumRef) || Boolean.TRUE.equals(property.isEnum) || Boolean.TRUE.equals(property.isInnerEnum)) {
+            LOGGER.info("Convert enum property to string {}: {}, {}", property.baseName, property.dataType, property);
+            property.setRef(null);
+            property.dataType = "kotlin.String";
+            property.isString = true;
+            property._enum = null;
+            property.isEnum = false;
+            property.isEnumRef = false;
+            property.isInnerEnum = false;
+            property.isNullable = true;
+            property.isNull = true;
+            property.defaultValue = null;
+            property.defaultValueWithParam = null;
+        }
     }
 
     /**
